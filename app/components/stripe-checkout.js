@@ -1,5 +1,5 @@
-import Ember from 'ember';
-import config from '../config/environment';
+import Ember from "ember";
+import config from "../config/environment";
 
 /**
  * Stripe checkout component for accepting payments with
@@ -14,9 +14,9 @@ import config from '../config/environment';
  * }}
  */
 export default Ember.Component.extend({
-  tagName: 'button',
-  classNames: ['stripe-checkout'],
-  attributeBindings: ['isDisabled:disabled'],
+  tagName: "button",
+  classNames: ["stripe-checkout"],
+  attributeBindings: ["isDisabled:disabled"],
 
   /**********************************
    * Required attributes
@@ -116,7 +116,7 @@ export default Ember.Component.extend({
    * Specify whether to reuse alipay information to
    * checkout (true or false). The default is false.
    */
-  'alipay-reusable': false,
+  "alipay-reusable": false,
 
   /**
    * Specify language preference.
@@ -183,38 +183,44 @@ export default Ember.Component.extend({
    *
    * Source: https://stripe.com/docs/api#tokens
    */
-  setupStripe: Ember.on('init', function() {
+  setupStripe: Ember.on("init", function () {
     var self = this;
 
-    if (Ember.isNone(this.get('key'))) {
+    if (Ember.isNone(this.get("key"))) {
       throw [
         "Your Stripe key must be set to use the stripe-checkout component. ",
         "Set the key in your environment.js file (ENV.stripe.key) or set the ",
         "key property on the component when instantiating it in your hbs template. ",
-        "Find your Stripe publishable key at https://dashboard.stripe.com/account/apikeys"
-      ].join('\n');
+        "Find your Stripe publishable key at https://dashboard.stripe.com/account/apikeys",
+      ].join("\n");
     }
 
     var handler = StripeCheckout.configure({
-      key: this.get('key'),
-      locale: this.get('locale'),
-      token: function(token) {
-        self.sendAction('action', token);
+      key: this.get("key"),
+      locale: this.get("locale"),
+      token: function (token) {
+        if (self.action) {
+          self.action(token);
+        }
       },
-      opened: function() {
-        self.sendAction('opened');
+      opened: function () {
+        if (self.opened) {
+          self.opened();
+        }
       },
-      closed: function() {
-        self.sendAction('closed');
-      }
+      closed: function () {
+        if (self.closed) {
+          self.closed();
+        }
+      },
     });
-    this.set('handler', handler);
+    this.set("handler", handler);
   }),
 
   /**
    * Kick up the modal if we're clicked
    */
-  click: function(e) {
+  click: function (e) {
     this.openModal();
     e.preventDefault();
   },
@@ -222,28 +228,28 @@ export default Ember.Component.extend({
   /**
    * Opens the Stripe modal for payment
    */
-  openModal: function() {
+  openModal: function () {
     var options = this.getProperties([
-      'image',
-      'name',
-      'description',
-      'amount',
-      'bitcoin',
-      'currency',
-      'panelLabel',
-      'zipCode',
-      'address',
-      'email',
-      'label',
-      'allowRememberMe',
-      'alipay',
-      'alipay-reusable'
+      "image",
+      "name",
+      "description",
+      "amount",
+      "bitcoin",
+      "currency",
+      "panelLabel",
+      "zipCode",
+      "address",
+      "email",
+      "label",
+      "allowRememberMe",
+      "alipay",
+      "alipay-reusable",
     ]);
-    this.get('handler').open(options);
+    this.get("handler").open(options);
   },
 
-  closeOnDestroy: Ember.on('willDestroyElement', function() {
+  closeOnDestroy: Ember.on("willDestroyElement", function () {
     // Close modal if the user navigates away from page
-    this.get('handler').close();
-  })
+    this.get("handler").close();
+  }),
 });
