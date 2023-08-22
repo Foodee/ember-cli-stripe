@@ -4,7 +4,7 @@ import { assign, merge } from '@ember/polyfills';
 import { guidFor } from '@ember/object/internals';
 import { isBlank, typeOf } from '@ember/utils';
 import { deprecate } from '@ember/application/deprecations';
-import { invokeAction } from 'ember-invoke-action';
+import { invokeAction } from '../utils/invoke-action';
 import RSVP from 'rsvp';
 import stripeConfigOptions from '../utils/configuration-options';
 
