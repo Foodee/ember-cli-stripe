@@ -1,7 +1,7 @@
-import Component from '@ember/component';
-import { inject as service } from '@ember/service';
-import { bool } from '@ember/object/computed';
-import layout from '../templates/components/stripe-checkout';
+import Component from "@ember/component";
+import { inject as service } from "@ember/service";
+import { bool } from "@ember/object/computed";
+import layout from "../templates/components/stripe-checkout";
 
 /**
  * Stripe checkout component for accepting payments with
@@ -18,18 +18,17 @@ import layout from '../templates/components/stripe-checkout';
  *
  */
 export default Component.extend({
-  classNames: ['stripe-checkout'],
-  attributeBindings: ['isDisabled:disabled'],
-  tagName: 'button',
+  classNames: ["stripe-checkout"],
+  attributeBindings: ["isDisabled:disabled"],
+  tagName: "button",
   layout,
 
-  stripe: service(),
-
+  stripeComponent: service(),
 
   /**
    * Stripe checkout button text.
    */
-  label: 'Pay with card',
+  label: "Pay with card",
 
   /**
    * When true, the Stripe checkout button is disabled.
@@ -42,7 +41,7 @@ export default Component.extend({
    */
   showCheckout: false,
 
-  hasBlock: bool('template').readOnly(),
+  hasBlock: bool("template").readOnly(),
 
   /**
    * Kick up the modal if we're clicked.
@@ -56,16 +55,16 @@ export default Component.extend({
    * Opens the Stripe modal for payment.
    */
   openCheckout() {
-    this.stripe.open(this);
+    this.stripeComponent.open(this);
   },
 
   closeCheckout() {
-    this.stripe.close(this);
+    this.stripeComponent.close(this);
   },
 
   init() {
     this._super(...arguments);
-    this.stripe.registerComponent(this);
+    this.stripeComponent.registerComponent(this);
   },
 
   didReceiveAttrs() {
@@ -78,6 +77,6 @@ export default Component.extend({
     this._super(...arguments);
 
     this.closeCheckout();
-    this.stripe.unregisterComponent(this);
+    this.stripeComponent.unregisterComponent(this);
   },
 });
