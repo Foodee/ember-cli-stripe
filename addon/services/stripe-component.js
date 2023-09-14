@@ -3,7 +3,7 @@ import Service from "@ember/service";
 import { assign, merge } from "@ember/polyfills";
 import { guidFor } from "@ember/object/internals";
 import { isBlank, typeOf } from "@ember/utils";
-import { deprecate } from "@ember/application/deprecations";
+import { deprecate } from '@ember/debug';
 import { getOwner } from "@ember/application";
 import invokeAction from "../utils/invoke-action";
 import stripeConfigOptions from "../utils/configuration-options";
@@ -167,9 +167,11 @@ export default Service.extend({
     return this._stripeScriptPromise;
   },
 
-  onScriptLoaded() {},
+  onScriptLoaded() {
+  },
 
-  onStripeLoadError() {},
+  onStripeLoadError() {
+  },
 
   _cleanupOptions(options) {
     let cleanedOptions = {};
