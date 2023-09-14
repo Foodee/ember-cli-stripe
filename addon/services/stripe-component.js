@@ -3,7 +3,6 @@ import Service from "@ember/service";
 import { assign, merge } from "@ember/polyfills";
 import { guidFor } from "@ember/object/internals";
 import { isBlank, typeOf } from "@ember/utils";
-import { deprecate } from '@ember/debug';
 import { getOwner } from "@ember/application";
 import invokeAction from "../utils/invoke-action";
 import stripeConfigOptions from "../utils/configuration-options";
@@ -116,12 +115,6 @@ export default Service.extend({
 
         // Add deprecation for previous `action` callback
         if (!isBlank(component.attrs.action)) {
-          deprecate(
-            "Using `action` callback is deprecated and will be removed in future versions. Please use `onToken` with a closure action instead",
-            false,
-            { id: "ember-cli-stripe.action-callback", until: "1.1.0" }
-          );
-
           invokeAction(component, "action", ...arguments);
         }
       },
